@@ -41,7 +41,7 @@ def emul_cpz(mode: emulation.Mode.MULTIPROCESS):
             return X_transformed
 
         # Set sample size and dimensions
-        num_samples = 10  # Number of samples
+        num_samples = 200  # Number of samples
         num_features = 4  # Sample dimension
         k = 6  # Number of nearest neighbors
         num_components = 3  # Dimension after dimensionality reduction
@@ -63,7 +63,7 @@ def emul_cpz(mode: emulation.Mode.MULTIPROCESS):
                 4,
             ),
         )(sX, num_samples, num_features, k, num_components)
-        print('ans: \n', ans)
+        # print('ans: \n', ans)
 
         # sklearn test
         affinity_matrix = kneighbors_graph(
@@ -76,7 +76,7 @@ def emul_cpz(mode: emulation.Mode.MULTIPROCESS):
         embedding = spectral_embedding(
             affinity_matrix, n_components=num_components, random_state=None
         )
-        print('embedding: \n', embedding)
+        # print('embedding: \n', embedding)
 
         np.testing.assert_allclose(jnp.abs(embedding), jnp.abs(ans), rtol=0, atol=1e-2)
 

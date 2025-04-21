@@ -140,3 +140,31 @@ def Jacobi(X, num_samples):
         k = k + 1
 
     return X, Q
+
+
+def Jacobi_Without_Opt(X, num_samples):
+    Q = jnp.eye(num_samples)
+    k = 0
+    while k < 5:
+        for i in range(1, 2 * num_samples - 2):
+            if i < num_samples:
+                l_0 = i
+                r_0 = 0
+            else:
+                l_0 = num_samples - 1
+                r_0 = i - l_0
+            
+            n = (l_0 - r_0 - 1) // 2 + 1
+            l = jnp.zeros(n, dtype=jnp.int16)
+            r = jnp.zeros(n, dtype=jnp.int16)
+            for j in range(0, n):
+                l = l.at[j].set(l_0 - j)
+                r = r.at[j].set(r_0 + j)
+            # Calculate rotation matrix
+            J = rotation_matrix(X, l, r, num_samples)
+            # Update X and Q with rotation matrix
+            X = jnp.dot(J.T, jnp.dot(X, J))
+            Q = jnp.dot(J.T, Q)
+        k = k + 1
+
+    return X, Q

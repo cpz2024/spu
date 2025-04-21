@@ -38,3 +38,22 @@ sml_py_binary(
         "//spu/intrinsic:all_intrinsics",
     ],
 )
+
+sml_py_binary(
+    name = "shortest_path_emul",
+    srcs = ["shortest_path_emul.py"],
+    deps = [
+        "//sml/manifold:floyd",
+        "//sml/manifold:dijkstra",
+        "//spu/intrinsic:all_intrinsics",
+    ],
+)
+
+sml_py_binary(
+    name = "jacobi_emul",
+    srcs = ["jacobi_emul.py"],
+    deps = [
+        "//sml/manifold:jacobi",
+        "//spu/intrinsic:all_intrinsics",
+    ],
+)

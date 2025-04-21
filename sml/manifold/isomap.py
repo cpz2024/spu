@@ -150,9 +150,7 @@ class ISOMAP:
         # sum all
         dist_2 = jnp.sum(dist_2_i)
         dist_2 = dist_2 / (self.n_samples)
-        for i in range(self.n_samples):
-            for j in range(self.n_samples):
-                B = B.at[i, j].set(B[i][j] - dist_2_i[i] - dist_2_j[j] + dist_2)
+        B = B - dist_2_i[:, None] - dist_2_j[None, :] + dist_2
 
         # Compute eigenvalues and eigenvectors
         values, vectors = Jacobi(B, self.n_samples)
@@ -167,8 +165,7 @@ class ISOMAP:
         values = si.perm(values, Index_value)
         for i in range(self.n_samples):
             per_vectors = si.perm(vectors[i], Index_value)
-            for j in range(self.n_samples):
-                vectors = vectors.at[i, j].set(per_vectors[j])
+            vectors = vectors.at[i].set(per_vectors)
 
         vectors = vectors[:, self.n_samples - self.n_components : self.n_samples]
         values = values[self.n_samples - self.n_components : self.n_samples]

@@ -169,8 +169,7 @@ class SE:
         Q = Q.T
         for i in range(self.n_samples):
             per_Q = si.perm(Q[i], perm)
-            for j in range(self.n_samples):
-                self.embedding_ = self.embedding_.at[i, j].set(per_Q[j])
+            self.embedding_=self.embedding_.at[i].set(per_Q)
 
         self.embedding_ = self.embedding_[:, 1 : self.n_components + 1]
 

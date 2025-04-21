@@ -58,11 +58,11 @@ def mpc_kneighbors_graph(
     Knn = jnp.zeros((num_samples, num_samples))
     for i in range(num_samples):
         per_dis = si.perm(Dis[i], Index_Dis[i])
-        for j in range(num_samples):
-            Knn = Knn.at[i, j].set(per_dis[j])
+        Knn=Knn.at[i].set(per_dis)
 
     # Find the square root of the Euclidean distance of the nearest neighbor previously calculated, and set the distance of non nearest neighbors to 0
     Knn2 = jnp.zeros((num_samples, num_samples))
+    
 
     def update_knn_row(i, Knn_row, n_neighbors):
         def update_element(j, Knn_value):
@@ -83,7 +83,5 @@ def mpc_kneighbors_graph(
     Knn3 = jnp.zeros((num_samples, num_samples))
     for i in range(num_samples):
         per_dis = si.invperm(Knn2[i], Index_Dis[i])
-        for j in range(num_samples):
-            Knn3 = Knn3.at[i, j].set(per_dis[j])
-
+        Knn3=Knn3.at[i].set(per_dis)
     return Knn3
